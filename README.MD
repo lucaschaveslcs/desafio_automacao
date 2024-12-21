@@ -47,7 +47,7 @@ Passo 13) Terminada a instalação clique em Finish e pronto.
 * Playwright:
 ```
 Passo 1) O Projeto já possui todas dependências nas quais utilizo, basta utilizar o comando: 
-npm install, que todos os "erros" sumiram e será possível a execução dos testes.
+npm install, que todos os "erros" sumirão e será possível a execução dos testes.
 ```
 
 ## 🛠️ Ferramentas
