@@ -3,17 +3,27 @@ dotenv.config();
 import { Page } from "playwright";
 import { Selectors } from "./Elements";
 import { BasePage } from "../../../common/utils/basePage";
-import { GenerateLogError } from "../../../exceptedHandler/GenerateLogError";
+//import { GenerateLogError } from "../../../exceptedHandler/GenerateLogError";
 
 class Actions {
   constructor(private page: Page) {
     this.page = page;
   }
 
+  //Criei essas variaveis publicas para poder realizar os testes Limites.
+  public testeLimite = {
+    nomeLimiteCaracter: this.repetirTexto("Lucas Chaves ", 256),
+    emailLimiteCaracter: "teste@"+this.repetirTexto("test.com", 151),
+    companyLimiteCaracter: this.repetirTexto("PagBrasil", 201),
+    phoneLimiteCaracter: this.repetirTexto("(51) 1234-5678", 16),
+    inquiryLimiteCaracter: this.repetirTexto("Cenários de Testes", 501),
+    webSiteLimiteCaracter: this.repetirTexto("https://teste.com.br", 201),
+  };
+
   //instanciando objetos de classes que serão utilizadas para realizar as ações na página
   //utilizo metodos da base que criei (utiliza nativo do playwright) mas reutilizei para destacar o campo no qual estou interagindo
   private base = new BasePage(this.page);
-  private generateLogError = new GenerateLogError();
+  //private generateLogError = new GenerateLogError();
 
   //funcao para preencher o campo name
   public async preencherName(nome: string) {
@@ -57,12 +67,21 @@ class Actions {
     await this.base.buttonClick(Selectors.buttonSubmit);
   }
 
+  //funcao para testes limites gerando caracteres ate o desejado
+  public repetirTexto(baseTexto: string, length: number) {
+    return baseTexto.repeat(Math.ceil(length / baseTexto.length)).slice(0, length);
+  }
+
+  /*
+    //Não vai ser necessario realizar as validações nos Testes.
+  // a ideia inicial era validar a resposta tanto pra positiva qnt pra erro 
+  // separadamente para utilizar nos cenarios
   //funcao para realizar a validação dos testes verificando o retorno 200 da API, formulario preenchido corretamente
   public async realizarValidacaoSucesso(): Promise<boolean> {
     const [response] = await Promise.all([
       this.page.waitForResponse(
         (response) =>
-          response.url() === "aqui viria api" && response.status() === 200
+          response.url() === "linkAPI" && response.status() === 200
       ),
     ]);
 
@@ -79,12 +98,15 @@ class Actions {
     }
   }
 
+  //Não vai ser necessario realizar as validações nos Testes.
+  // a ideia inicial era validar a resposta tanto pra positiva qnt pra erro 
+  // separadamente para utilizar nos cenarios
   //funcao para realizar a validação dos testes verificando o retorno da api 412, para os erros do formulario
   public async realizarValidacaoErro(): Promise<boolean> {
     const [response] = await Promise.all([
       this.page.waitForResponse(
         (response) =>
-          response.url() === "aqui viria api" && response.status() === 200
+          response.url() === "linkAPI" && response.status() === 200
       ),
     ]);
 
@@ -99,6 +121,6 @@ class Actions {
       await this.generateLogError.screenShotError(this.page, "Erro: Resposta da API não é 412");
       return false; // Retorna false caso o status não seja 412 OK
     }
-  }
+  }*/
 }
 export { Actions };
