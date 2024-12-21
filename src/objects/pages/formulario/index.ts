@@ -2,7 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 import { Page } from "playwright";
 import { Selectors } from "./Elements";
-import { BasePage } from "../../../utils/basePage";
+import { BasePage } from "../../../common/utils/basePage";
+import { GenerateLogError } from "../../../exceptedHandler/GenerateLogError";
 
 class Actions {
   constructor(private page: Page) {
@@ -12,6 +13,7 @@ class Actions {
   //instanciando objetos de classes que serão utilizadas para realizar as ações na página
   //utilizo metodos da base que criei (utiliza nativo do playwright) mas reutilizei para destacar o campo no qual estou interagindo
   private base = new BasePage(this.page);
+  private generateLogError = new GenerateLogError();
 
   //funcao para preencher o campo name
   public async preencherName(nome: string) {
@@ -72,6 +74,7 @@ class Actions {
       console.log(
         `Erro: Resposta da API não é 200. Código recebido: ${response.status()}`
       );
+      await this.generateLogError.screenShotError(this.page, "Erro: Resposta da API não é 200");
       return false; // Retorna false caso o status não seja 200 OK
     }
   }
@@ -93,6 +96,7 @@ class Actions {
       console.log(
         `Erro: Resposta da API não é 412. Código recebido: ${response.status()}`
       );
+      await this.generateLogError.screenShotError(this.page, "Erro: Resposta da API não é 412");
       return false; // Retorna false caso o status não seja 412 OK
     }
   }

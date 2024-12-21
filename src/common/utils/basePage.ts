@@ -1,5 +1,5 @@
 import { Page } from "playwright";
-import { GenerateLogError } from "../exceptedHandler/GenerateLogError";
+import { GenerateLogError } from "../../exceptedHandler/GenerateLogError";
 
 export class BasePage {
   constructor(public page: Page) {
